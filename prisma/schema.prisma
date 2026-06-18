@@ -1,0 +1,136 @@
+// SISOL Construction — data model
+// Postgres on Neon, accessed through Prisma using the Neon serverless driver adapter.
+// See src/lib/prisma.ts for the adapter wiring.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Users — built-in email + password authentication
+// ---------------------------------------------------------------------------
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  phone        String?
+  passwordHash String
+  role         Role     @default(CLIENT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  simulations  Simulation[]
+  savedResults SavedResult[]
+
+  @@map("users")
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+// ---------------------------------------------------------------------------
+// Simulations — a project quote / lead capture
+// Each simulation belongs to a user and captures the contact + project details
+// plus a ballpark cost estimate. Quote versions are stored as SavedResult rows.
+// ---------------------------------------------------------------------------
+model Simulation {
+  id           String           @id @default(cuid())
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title        String
+  projectType  ProjectType
+  description  String?
+
+  // Lead / contact details
+  contactName  String
+  contactEmail String
+  contactPhone String?
+  addressLine  String?
+  city         String?          @default("London")
+  postcode     String?
+
+  // Project inputs used by the estimator
+  areaSqm      Float?
+  finishLevel  FinishLevel      @default(STANDARD)
+  inputs       Json?
+
+  // Ballpark estimate produced by the simulator
+  estimateMin  Float?
+  estimateMax  Float?
+  currency     String           @default("GBP")
+
+  status       SimulationStatus @default(DRAFT)
+
+  savedResults SavedResult[]
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("simulations")
+}
+
+enum ProjectType {
+  LOFT_CONVERSION
+  EXTENSION
+  REFURBISHMENT
+  ROOFING
+  GROUNDWORKS
+  OTHER
+}
+
+enum FinishLevel {
+  BASIC
+  STANDARD
+  PREMIUM
+}
+
+enum SimulationStatus {
+  DRAFT
+  SUBMITTED
+  QUOTED
+  ACCEPTED
+  DECLINED
+}
+
+// ---------------------------------------------------------------------------
+// SavedResult — saved quote versions, per user
+// A user can save multiple quote versions for a given simulation.
+// ---------------------------------------------------------------------------
+model SavedResult {
+  id           String            @id @default(cuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  simulationId String
+  simulation   Simulation        @relation(fields: [simulationId], references: [id], onDelete: Cascade)
+
+  version      Int               @default(1)
+  label        String?
+  amount       Float?
+  currency     String            @default("GBP")
+  breakdown    Json?
+  notes        String?
+  status       SavedResultStatus @default(DRAFT)
+
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([simulationId, version])
+  @@index([userId])
+  @@map("saved_results")
+}
+
+enum SavedResultStatus {
+  DRAFT
+  FINAL
+  SENT
+}
