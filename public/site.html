@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&amp;family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{font-family:'DM Sans',system-ui,sans-serif;color:#1d2840;background:#fff;-webkit-font-smoothing:antialiased;line-height:1.6}
+  img{max-width:100%;display:block}
+  a{text-decoration:none;color:inherit}
+  ::selection{background:#c89038;color:#fff}
+  input,textarea,select,button{font-family:inherit}
+  .desk-nav{display:flex}
+  .burger{display:none}
+  .mob-panel{display:none}
+  @media(max-width:920px){
+    .desk-nav{display:none!important}
+    .burger{display:flex!important}
+    .head-cta{display:none!important}
+  }
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style>
+</helmet>
+
+<div style="--accent: {{ accent }}; --acc-soft: {{ accentSoft }}; --radius: {{ radius }}; background:#fff; overflow-x:hidden;">
+
+  <!-- ============ HEADER ============ -->
+  <header style="position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid #e9e4d8;">
+    <div style="max-width:1200px;margin:0 auto;padding:11px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="#home" style="display:flex;align-items:center;gap:11px;">
+        <img src="assets/sisol-logo.png" alt="SISOL Construction Ltd logo" style="height:52px;width:auto;">
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <span style="font-family:'Archivo';font-weight:900;font-size:21px;letter-spacing:1px;color:#14233f;">SISOL</span>
+          <span style="font-size:9.5px;letter-spacing:2.5px;font-weight:600;color:var(--accent,#c89038);">CONSTRUCTION&nbsp;LTD</span>
+        </span>
+      </a>
+      <nav class="desk-nav" style="align-items:center;gap:30px;">
+        <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="6">
+          <a href="{{ link.href }}" style="font-size:14.5px;font-weight:600;color:#2b3550;letter-spacing:.2px;" style-hover="color:var(--accent,#c89038);">{{ link.label }}</a>
+        </sc-for>
+      </nav>
+      <div class="head-cta" style="display:flex;align-items:center;gap:18px;">
+        <a href="tel:+447470409231" style="display:flex;align-items:center;gap:8px;font-weight:700;color:#14233f;font-size:14.5px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          07470 409231
+        </a>
+        <a href="#contact" style="background:var(--accent,#c89038);color:#14233f;font-weight:700;font-size:14px;padding:11px 20px;border-radius:var(--radius,14px);letter-spacing:.2px;box-shadow:0 6px 18px rgba(200,144,56,.32);" style-hover="background:#14233f;color:#fff;">Get a Quote</a>
+      </div>
+      <button class="burger" onClick="{{ toggleMobile }}" aria-label="Menu" style="display:none;align-items:center;justify-content:center;width:44px;height:44px;border:none;background:#14233f;border-radius:10px;cursor:pointer;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="mob-panel" style="display:{{ mobileDisplay }};border-top:1px solid #e9e4d8;background:#fff;padding:10px 24px 18px;">
+      <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="6">
+        <a href="{{ link.href }}" onClick="{{ closeMobile }}" style="display:block;padding:12px 4px;font-weight:600;color:#2b3550;border-bottom:1px solid #f0ece2;">{{ link.label }}</a>
+      </sc-for>
+      <a href="#contact" onClick="{{ closeMobile }}" style="display:block;text-align:center;margin-top:14px;background:var(--accent,#c89038);color:#14233f;font-weight:700;padding:13px;border-radius:var(--radius,14px);">Get a Free Quote</a>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="home" style="position:relative;background:linear-gradient(135deg,#14233f 0%,#1b2e52 55%,#22386a 100%);color:#fff;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:46px 46px;opacity:.7;"></div>
+    <div style="position:absolute;top:-120px;right:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(200,144,56,.28),transparent 70%);"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:clamp(56px,7vw,96px) 24px;display:flex;flex-wrap:wrap;gap:50px;align-items:center;">
+      <div style="flex:1 1 460px;min-width:300px;">
+        <div style="display:inline-flex;align-items:center;gap:9px;background:rgba(200,144,56,.16);border:1px solid rgba(200,144,56,.4);color:var(--accent,#c89038);padding:7px 15px;border-radius:100px;font-size:13px;font-weight:700;letter-spacing:.4px;margin-bottom:24px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent,#c89038);"></span>
+          London's Trusted Construction Partner
+        </div>
+        <h1 style="font-family:'Archivo';font-weight:900;font-size:clamp(38px,5.4vw,64px);line-height:1.02;letter-spacing:-1.2px;margin-bottom:22px;">
+          Building London,<br><span style="color:var(--accent,#c89038);">Brick by Brick.</span>
+        </h1>
+        <p style="font-size:clamp(16px,1.6vw,19px);color:#c5cee0;max-width:520px;margin-bottom:34px;">
+          From loft conversions and extensions to full refurbishments, roofing and groundworks — SISOL Construction delivers quality craftsmanship backed by over a decade of experience across London and the South East.
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;">
+          <a href="#contact" style="background:var(--accent,#c89038);color:#14233f;font-weight:800;font-size:16px;padding:16px 30px;border-radius:var(--radius,14px);box-shadow:0 10px 26px rgba(200,144,56,.35);" style-hover="transform:translateY(-2px);">Request a Free Quote</a>
+          <a href="#projects" style="border:1.5px solid rgba(255,255,255,.35);color:#fff;font-weight:700;font-size:16px;padding:16px 30px;border-radius:var(--radius,14px);" style-hover="background:rgba(255,255,255,.1);">See Our Work</a>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:26px;margin-top:42px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#c5cee0;font-weight:600;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Fully Insured
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#c5cee0;font-weight:600;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Free Quotes
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#c5cee0;font-weight:600;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 10+ Years Experience
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 380px;min-width:300px;position:relative;">
+        <div style="position:relative;border-radius:calc(var(--radius,14px) + 6px);overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 70px rgba(0,0,0,.4);aspect-ratio:4/3;background:#16233d;">
+          <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&amp;q=80&amp;auto=format&amp;fit=crop" alt="SISOL builders on site" loading="eager" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(8,15,30,.85));">
+            <div style="font-family:'Archivo';font-weight:700;font-size:17px;">Two-Storey Rear Extension</div>
+            <div style="font-size:13px;color:#c5cee0;">Clapham, South London</div>
+          </div>
+        </div>
+        <div style="position:absolute;bottom:-26px;left:-22px;background:#fff;color:#14233f;border-radius:var(--radius,14px);padding:18px 22px;box-shadow:0 18px 40px rgba(0,0,0,.28);animation:floaty 5s ease-in-out infinite;">
+          <div style="font-family:'Archivo';font-weight:900;font-size:34px;color:var(--accent,#c89038);line-height:1;">10+</div>
+          <div style="font-size:12.5px;font-weight:700;letter-spacing:.3px;margin-top:3px;">Years of Trusted<br>Craftsmanship</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS / TRUST STRIP ============ -->
+  <section style="background:#f6f2e9;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#e6dfcf;border-radius:var(--radius,14px);overflow:hidden;transform:translateY(-38px);box-shadow:0 16px 40px rgba(20,35,63,.1);">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="background:#fff;padding:28px 24px;text-align:center;">
+            <div style="font-family:'Archivo';font-weight:900;font-size:30px;color:#14233f;line-height:1;">{{ s.num }}</div>
+            <div style="height:3px;width:34px;background:var(--accent,#c89038);margin:12px auto;border-radius:2px;"></div>
+            <div style="font-size:13.5px;font-weight:600;color:#5a6478;">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section id="services" style="background:#fff;padding:clamp(40px,5vw,70px) 0 clamp(70px,8vw,100px);">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;max-width:680px;margin:0 auto 54px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">What We Do</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(30px,4vw,44px);color:#14233f;letter-spacing:-.8px;line-height:1.08;margin-bottom:16px;">A Complete Range of Construction Services</h2>
+        <p style="color:#5a6478;font-size:16.5px;">One reliable team for every stage of your build — from first foundations to the final finish.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:22px;">
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V7l8-4v18"></path><path d="M19 21V11l-6-4"></path><path d="M9 9v.01"></path><path d="M9 12v.01"></path><path d="M9 15v.01"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Extensions &amp; Loft Conversions</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Add valuable living space with single or double-storey extensions, wrap-arounds and bespoke loft conversions.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5S5 13 5 15a7 7 0 0 0 7 7z"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Renovations &amp; Refurbishments</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Full property refurbishments, kitchen and bathroom remodels, and period restorations done to a high standard.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 9-8 9 8"></path><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Roofing</h3>
+          <p style="color:#5a6478;font-size:14.5px;">New roofs, re-slating, flat roof replacement, repairs and guttering — weatherproofing your property for years.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="4"></rect><rect x="3" y="10" width="18" height="4"></rect><rect x="3" y="16" width="18" height="4"></rect><line x1="9" y1="4" x2="9" y2="8"></line><line x1="15" y1="10" x2="15" y2="14"></line><line x1="9" y1="16" x2="9" y2="20"></line></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Brickwork &amp; Masonry</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Structural brickwork, repointing, garden walls and feature stonework laid by skilled, time-served bricklayers.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 4 14"></path><path d="m3 21 3-1 12-12-2-2L4 18z"></path><path d="m14 4 6 6"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Plastering &amp; Rendering</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Smooth skim finishes, full re-plastering and external rendering for a flawless, durable surface.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22h20"></path><path d="M3 22V12l5-3 5 3v10"></path><path d="M13 22v-7l5-3 3 2v8"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Groundworks &amp; Civil Engineering</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Foundations, drainage, driveways and site preparation — laying the groundwork your project depends on.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"></path><rect x="9" y="2" width="6" height="9" rx="1"></rect><path d="M9 7h6"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Project Management</h3>
+          <p style="color:#5a6478;font-size:14.5px;">A single point of contact coordinating trades, schedules, building regs and budgets from start to finish.</p>
+        </div>
+
+        <div style="background:#fff;border:1px solid #ebe6dc;border-radius:var(--radius,14px);padding:30px 26px;transition:.25s;" style-hover="transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,35,63,.12);border-color:var(--accent,#c89038);">
+          <div style="width:54px;height:54px;border-radius:14px;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+          </div>
+          <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;color:#14233f;margin-bottom:9px;">Property Maintenance</h3>
+          <p style="color:#5a6478;font-size:14.5px;">Reliable ongoing repairs and maintenance for homeowners, landlords and commercial property managers.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" style="background:#f6f2e9;padding:clamp(70px,8vw,100px) 0;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:54px;align-items:center;">
+      <div style="flex:1 1 380px;min-width:300px;position:relative;">
+        <div style="border-radius:calc(var(--radius,14px) + 4px);overflow:hidden;aspect-ratio:5/4;background:#14233f;position:relative;box-shadow:0 24px 56px rgba(20,35,63,.22);">
+          <img src="https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?w=900&amp;q=80&amp;auto=format&amp;fit=crop" alt="SISOL Construction team on site" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div style="position:absolute;bottom:-24px;right:-18px;background:var(--accent,#c89038);color:#14233f;border-radius:var(--radius,14px);padding:20px 24px;box-shadow:0 16px 38px rgba(200,144,56,.4);max-width:200px;">
+          <div style="font-family:'Archivo';font-weight:900;font-size:15px;line-height:1.3;">Quality you can stand on.</div>
+        </div>
+      </div>
+      <div style="flex:1 1 420px;min-width:300px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">About SISOL</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.6vw,40px);color:#14233f;letter-spacing:-.6px;line-height:1.1;margin-bottom:20px;">A Decade of Building Trust Across London</h2>
+        <p style="color:#4d586e;font-size:16px;margin-bottom:16px;">SISOL Construction Ltd is a London-based building contractor bringing together more than ten years of hands-on experience across residential and commercial projects. We've built our reputation on doing things properly — clear communication, honest pricing, and craftsmanship that lasts.</p>
+        <p style="color:#4d586e;font-size:16px;margin-bottom:28px;">Whether you're extending your family home, refurbishing a property to let, or starting a build from the ground up, our team manages every detail so the process is smooth, transparent and stress-free.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;">
+          <div style="display:flex;gap:13px;align-items:flex-start;">
+            <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#14233f;display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div><div style="font-weight:700;color:#14233f;font-size:15px;">Experienced Team</div><div style="font-size:13.5px;color:#5a6478;">Skilled, time-served tradespeople.</div></div>
+          </div>
+          <div style="display:flex;gap:13px;align-items:flex-start;">
+            <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#14233f;display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div><div style="font-weight:700;color:#14233f;font-size:15px;">Transparent Pricing</div><div style="font-size:13.5px;color:#5a6478;">Detailed quotes, no surprises.</div></div>
+          </div>
+          <div style="display:flex;gap:13px;align-items:flex-start;">
+            <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#14233f;display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div><div style="font-weight:700;color:#14233f;font-size:15px;">Fully Insured</div><div style="font-size:13.5px;color:#5a6478;">Complete peace of mind.</div></div>
+          </div>
+          <div style="display:flex;gap:13px;align-items:flex-start;">
+            <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#14233f;display:flex;align-items:center;justify-content:center;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div><div style="font-weight:700;color:#14233f;font-size:15px;">On-Time Delivery</div><div style="font-size:13.5px;color:#5a6478;">Projects finished as promised.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROCESS ============ -->
+  <section style="background:linear-gradient(135deg,#14233f,#1d3056);color:#fff;padding:clamp(70px,8vw,100px) 0;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:46px 46px;"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;max-width:640px;margin:0 auto 54px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">How We Work</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.8vw,42px);letter-spacing:-.6px;line-height:1.1;">A Simple, Transparent Process</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;">
+        <sc-for list="{{ steps }}" as="st" hint-placeholder-count="4">
+          <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius,14px);padding:30px 26px;">
+            <div style="font-family:'Archivo';font-weight:900;font-size:40px;color:var(--accent,#c89038);line-height:1;opacity:.95;">{{ st.n }}</div>
+            <h3 style="font-family:'Archivo';font-weight:700;font-size:19px;margin:16px 0 9px;">{{ st.t }}</h3>
+            <p style="color:#b9c3da;font-size:14.5px;">{{ st.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" style="background:#fff;padding:clamp(70px,8vw,100px) 0;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px;">
+        <div style="max-width:560px;">
+          <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">Our Work</div>
+          <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.8vw,42px);color:#14233f;letter-spacing:-.6px;line-height:1.1;">Recent Projects</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;">
+        <sc-for list="{{ projects }}" as="p">
+          <div style="border-radius:var(--radius,14px);overflow:hidden;position:relative;aspect-ratio:4/3;background:#16233d;cursor:pointer;border:1px solid #ebe6dc;" style-hover="transform:translateY(-5px);box-shadow:0 20px 44px rgba(20,35,63,.18);">
+            <img src="{{ p.img }}" alt="{{ p.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+            <div style="position:absolute;top:14px;left:14px;background:var(--accent,#c89038);color:#14233f;font-size:11.5px;font-weight:800;letter-spacing:.4px;padding:5px 11px;border-radius:100px;text-transform:uppercase;">{{ p.tag }}</div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:18px;background:linear-gradient(transparent,rgba(8,15,30,.9));">
+              <div style="color:#fff;font-family:'Archivo';font-weight:700;font-size:17px;">{{ p.title }}</div>
+              <div style="color:#c5cee0;font-size:13px;margin-top:2px;">{{ p.loc }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ACCREDITATION STRIP ============ -->
+  <section style="background:#f6f2e9;padding:40px 0;border-top:1px solid #eadfca;border-bottom:1px solid #eadfca;">
+    <div style="max-width:1100px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:38px 56px;">
+      <span style="font-size:13px;font-weight:700;color:#8a7a52;letter-spacing:1px;text-transform:uppercase;">Built to Standard</span>
+      <sc-for list="{{ accreds }}" as="a" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:10px;color:#52607c;font-weight:700;font-size:15px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          {{ a }}
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section id="reviews" style="background:#fff;padding:clamp(70px,8vw,100px) 0;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;max-width:640px;margin:0 auto 50px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">Testimonials</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.8vw,42px);color:#14233f;letter-spacing:-.6px;line-height:1.1;">What Our Clients Say</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;">
+        <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="3">
+          <div style="background:#f9f6ef;border:1px solid #ece6da;border-radius:var(--radius,14px);padding:32px 28px;display:flex;flex-direction:column;">
+            <div style="color:var(--accent,#c89038);font-size:17px;letter-spacing:2px;margin-bottom:16px;">★★★★★</div>
+            <p style="color:#3a4459;font-size:15.5px;font-style:italic;flex:1;margin-bottom:22px;">“{{ r.quote }}”</p>
+            <div style="display:flex;align-items:center;gap:13px;">
+              <div style="width:46px;height:46px;border-radius:50%;background:#14233f;color:var(--accent,#c89038);display:flex;align-items:center;justify-content:center;font-family:'Archivo';font-weight:800;font-size:16px;">{{ r.initials }}</div>
+              <div><div style="font-weight:700;color:#14233f;font-size:15px;">{{ r.name }}</div><div style="font-size:13px;color:#5a6478;">{{ r.role }}</div></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq" style="background:#f6f2e9;padding:clamp(70px,8vw,100px) 0;">
+    <div style="max-width:840px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;margin-bottom:46px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">FAQ</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.8vw,42px);color:#14233f;letter-spacing:-.6px;line-height:1.1;">Frequently Asked Questions</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="6">
+          <div style="background:#fff;border:1px solid #ece6da;border-radius:var(--radius,14px);overflow:hidden;">
+            <button onClick="{{ q.onClick }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;background:none;border:none;cursor:pointer;text-align:left;">
+              <span style="font-family:'Archivo';font-weight:700;font-size:16.5px;color:#14233f;">{{ q.q }}</span>
+              <span style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--acc-soft,#f7edda);color:var(--accent,#c89038);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;">{{ q.sign }}</span>
+            </button>
+            <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:0 24px 22px;color:#4d586e;font-size:15px;">{{ q.a }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BANNER ============ -->
+  <section style="background:var(--accent,#c89038);padding:clamp(48px,6vw,72px) 0;">
+    <div style="max-width:1100px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:28px;">
+      <div>
+        <h2 style="font-family:'Archivo';font-weight:900;font-size:clamp(26px,3.4vw,38px);color:#14233f;letter-spacing:-.6px;line-height:1.08;">Ready to start your project?</h2>
+        <p style="color:#42361c;font-size:16.5px;font-weight:600;margin-top:8px;">Get a free, no-obligation quote from our team today.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="tel:+447470409231" style="display:flex;align-items:center;gap:9px;background:#14233f;color:#fff;font-weight:700;font-size:16px;padding:16px 28px;border-radius:var(--radius,14px);" style-hover="transform:translateY(-2px);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          07470 409231
+        </a>
+        <a href="#contact" style="background:#fff;color:#14233f;font-weight:800;font-size:16px;padding:16px 28px;border-radius:var(--radius,14px);" style-hover="transform:translateY(-2px);">Request a Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" style="background:#14233f;color:#fff;padding:clamp(70px,8vw,100px) 0;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:46px 46px;"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:50px;">
+      <div style="flex:1 1 360px;min-width:300px;">
+        <div style="color:var(--accent,#c89038);font-weight:800;letter-spacing:2px;font-size:13px;text-transform:uppercase;margin-bottom:14px;">Get In Touch</div>
+        <h2 style="font-family:'Archivo';font-weight:800;font-size:clamp(28px,3.8vw,42px);letter-spacing:-.6px;line-height:1.1;margin-bottom:18px;">Let's Build Something Great</h2>
+        <p style="color:#b9c3da;font-size:16px;margin-bottom:34px;max-width:420px;">Tell us about your project and we'll get back to you with a free, no-obligation quote.</p>
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <a href="tel:+447470409231" style="display:flex;align-items:center;gap:16px;">
+            <div style="flex:none;width:50px;height:50px;border-radius:13px;background:rgba(200,144,56,.16);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+            <div><div style="font-size:13px;color:#9aa6c0;font-weight:600;">Call us</div><div style="font-weight:700;font-size:17px;">07470 409231</div></div>
+          </a>
+          <a href="mailto:info@sisolconstruction.co.uk" style="display:flex;align-items:center;gap:16px;">
+            <div style="flex:none;width:50px;height:50px;border-radius:13px;background:rgba(200,144,56,.16);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-10 5L2 7"></path></svg></div>
+            <div><div style="font-size:13px;color:#9aa6c0;font-weight:600;">Email us</div><div style="font-weight:700;font-size:17px;">info@sisolconstruction.co.uk</div></div>
+          </a>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="flex:none;width:50px;height:50px;border-radius:13px;background:rgba(200,144,56,.16);display:flex;align-items:center;justify-content:center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+            <div><div style="font-size:13px;color:#9aa6c0;font-weight:600;">Service area</div><div style="font-weight:700;font-size:17px;">London &amp; the South East</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;">
+        <div style="background:#fff;border-radius:calc(var(--radius,14px) + 4px);padding:34px;box-shadow:0 24px 60px rgba(0,0,0,.3);">
+          <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:center;padding:36px 12px;">
+              <div style="width:66px;height:66px;border-radius:50%;background:var(--acc-soft,#f7edda);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#c89038)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <h3 style="font-family:'Archivo';font-weight:800;font-size:23px;color:#14233f;margin-bottom:10px;">Thank you!</h3>
+              <p style="color:#5a6478;font-size:15.5px;">Your enquiry has been received. We'll be in touch shortly to discuss your project.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <h3 style="font-family:'Archivo';font-weight:800;font-size:22px;color:#14233f;margin-bottom:6px;">Request a Free Quote</h3>
+              <p style="color:#6a7488;font-size:14px;margin-bottom:22px;">Fields marked * are required.</p>
+              <div style="display:flex;flex-direction:column;gap:14px;">
+                <div style="display:flex;gap:14px;flex-wrap:wrap;">
+                  <input placeholder="Your name *" style="flex:1 1 160px;min-width:140px;padding:13px 15px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;color:#14233f;outline:none;" style-focus="border-color:var(--accent,#c89038);">
+                  <input placeholder="Phone *" style="flex:1 1 160px;min-width:140px;padding:13px 15px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;color:#14233f;outline:none;" style-focus="border-color:var(--accent,#c89038);">
+                </div>
+                <input placeholder="Email" style="padding:13px 15px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;color:#14233f;outline:none;" style-focus="border-color:var(--accent,#c89038);">
+                <select style="padding:13px 15px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;color:#14233f;outline:none;background:#fff;" style-focus="border-color:var(--accent,#c89038);">
+                  <option>Service required…</option>
+                  <option>Extension / Loft Conversion</option>
+                  <option>Renovation / Refurbishment</option>
+                  <option>Roofing</option>
+                  <option>Brickwork / Masonry</option>
+                  <option>Plastering / Rendering</option>
+                  <option>Groundworks</option>
+                  <option>Property Maintenance</option>
+                  <option>Other</option>
+                </select>
+                <textarea placeholder="Tell us about your project…" rows="4" style="padding:13px 15px;border:1px solid #d8dee9;border-radius:10px;font-size:15px;color:#14233f;outline:none;resize:vertical;font-family:inherit;" style-focus="border-color:var(--accent,#c89038);"></textarea>
+                <button onClick="{{ submit }}" style="background:var(--accent,#c89038);color:#14233f;font-weight:800;font-size:16px;padding:15px;border:none;border-radius:var(--radius,14px);cursor:pointer;box-shadow:0 8px 22px rgba(200,144,56,.32);" style-hover="background:#14233f;color:#fff;">Send Enquiry</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#0f1b30;color:#9aa6c0;padding:54px 0 28px;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1);">
+        <div style="flex:1 1 280px;max-width:340px;">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;">
+            <img src="assets/sisol-logo.png" alt="SISOL Construction Ltd" style="height:46px;background:#fff;border-radius:10px;padding:4px;">
+            <span style="display:flex;flex-direction:column;line-height:1;">
+              <span style="font-family:'Archivo';font-weight:900;font-size:19px;letter-spacing:1px;color:#fff;">SISOL</span>
+              <span style="font-size:9px;letter-spacing:2.5px;font-weight:600;color:var(--accent,#c89038);">CONSTRUCTION&nbsp;LTD</span>
+            </span>
+          </div>
+          <p style="font-size:14px;line-height:1.7;">London-based building contractor delivering quality extensions, renovations, roofing and groundworks with over a decade of experience.</p>
+        </div>
+        <div style="flex:0 1 auto;">
+          <div style="font-family:'Archivo';font-weight:700;color:#fff;font-size:15px;margin-bottom:16px;">Services</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="#services" style-hover="color:var(--accent,#c89038);">Extensions &amp; Lofts</a>
+            <a href="#services" style-hover="color:var(--accent,#c89038);">Renovations</a>
+            <a href="#services" style-hover="color:var(--accent,#c89038);">Roofing</a>
+            <a href="#services" style-hover="color:var(--accent,#c89038);">Groundworks</a>
+          </div>
+        </div>
+        <div style="flex:0 1 auto;">
+          <div style="font-family:'Archivo';font-weight:700;color:#fff;font-size:15px;margin-bottom:16px;">Company</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="#about" style-hover="color:var(--accent,#c89038);">About Us</a>
+            <a href="#projects" style-hover="color:var(--accent,#c89038);">Projects</a>
+            <a href="#reviews" style-hover="color:var(--accent,#c89038);">Reviews</a>
+            <a href="#faq" style-hover="color:var(--accent,#c89038);">FAQ</a>
+          </div>
+        </div>
+        <div style="flex:0 1 auto;">
+          <div style="font-family:'Archivo';font-weight:700;color:#fff;font-size:15px;margin-bottom:16px;">Contact</div>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+            <a href="tel:+447470409231" style-hover="color:var(--accent,#c89038);">07470 409231</a>
+            <a href="mailto:info@sisolconstruction.co.uk" style-hover="color:var(--accent,#c89038);">info@sisolconstruction.co.uk</a>
+            <span>London &amp; South East</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;padding-top:24px;font-size:13px;">
+        <span>© 2026 SISOL Construction Ltd. All rights reserved.</span>
+        <span>Registered in England &amp; Wales · Company No. 16884723</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#c89038&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;accentSoft&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f7edda&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;radius&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:14,&quot;min&quot;:0,&quot;max&quot;:28,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { mobileOpen: false, filter: "All", openFaq: 0, submitted: false };
+
+  allProjects() {
+    return [
+      { title: "Exterior Renovation & Decorating", loc: "Wandsworth, London", tag: "Renovation", cat: "Renovations", img: "https://images.unsplash.com/photo-1574359411659-15573a27fd0c?w=800&q=80&auto=format&fit=crop" },
+      { title: "Victorian Loft Conversion", loc: "Islington, North London", tag: "Lofts", cat: "Extensions", img: "https://images.unsplash.com/photo-1590725140246-20acdee442be?w=800&q=80&auto=format&fit=crop" },
+      { title: "Full House Refurbishment", loc: "Hackney, East London", tag: "Renovation", cat: "Renovations", img: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80&auto=format&fit=crop" },
+      { title: "New Pitched Roof & Guttering", loc: "Croydon, South London", tag: "Roofing", cat: "Roofing", img: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=80&auto=format&fit=crop" },
+      { title: "Property Maintenance & Repairs", loc: "Streatham, London", tag: "Maintenance", cat: "Maintenance", img: "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80&auto=format&fit=crop" },
+      { title: "Kitchen & Bathroom Remodel", loc: "Wandsworth, London", tag: "Renovation", cat: "Renovations", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80&auto=format&fit=crop" }
+    ];
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? "#c89038";
+    const cats = ["All", "Extensions", "Renovations", "Roofing", "Maintenance"];
+    const filter = this.state.filter;
+
+    const filters = cats.map(c => {
+      const active = c === filter;
+      return {
+        label: c,
+        onClick: () => this.setState({ filter: c }),
+        style: "padding:9px 16px;border-radius:100px;font-size:13.5px;font-weight:700;cursor:pointer;border:1.5px solid " +
+          (active ? accent : "#e0d9c9") + ";background:" + (active ? accent : "#fff") +
+          ";color:" + (active ? "#14233f" : "#5a6478") + ";transition:.2s;"
+      };
+    });
+
+    const projects = this.allProjects().filter(p => filter === "All" || p.cat === filter);
+
+    const faqData = [
+      { q: "Do you offer free quotes?", a: "Yes — every project starts with a free, no-obligation consultation and written quote. Just call us or fill in the enquiry form and we'll arrange a convenient time to visit." },
+      { q: "Are you fully insured?", a: "Absolutely. SISOL Construction carries full public liability insurance, and all our work is carried out to current UK building regulations for complete peace of mind." },
+      { q: "Which areas do you cover?", a: "We're based in London and work across the capital and the wider South East. If you're unsure whether we cover your area, get in touch and we'll let you know." },
+      { q: "Do you handle planning and building regulations?", a: "Yes. As part of our project management service we can advise on and coordinate planning applications, building control sign-off and party-wall matters where required." },
+      { q: "How long does a typical project take?", a: "It depends on scope — a loft conversion may take 6–8 weeks, while a full refurbishment can run longer. We'll give you a clear timeline in your quote and keep you updated throughout." },
+      { q: "Can I see examples of your previous work?", a: "Of course. Take a look at our Projects section above, and we're happy to share further references and case studies relevant to your build on request." }
+    ];
+    const faqs = faqData.map((f, i) => ({
+      q: f.q, a: f.a,
+      open: this.state.openFaq === i,
+      sign: this.state.openFaq === i ? "–" : "+",
+      onClick: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i }))
+    }));
+
+    return {
+      accent,
+      accentSoft: this.props.accentSoft ?? "#f7edda",
+      radius: (this.props.radius ?? 14) + "px",
+      navLinks: [
+        { label: "Home", href: "#home" },
+        { label: "Services", href: "#services" },
+        { label: "About", href: "#about" },
+        { label: "Projects", href: "#projects" },
+        { label: "Reviews", href: "#reviews" },
+        { label: "FAQ", href: "#faq" }
+      ],
+      mobileDisplay: this.state.mobileOpen ? "block" : "none",
+      toggleMobile: () => this.setState(s => ({ mobileOpen: !s.mobileOpen })),
+      closeMobile: () => this.setState({ mobileOpen: false }),
+      stats: [
+        { num: "10+", label: "Years of Experience" },
+        { num: "100+", label: "Projects Completed" },
+        { num: "100%", label: "Fully Insured" },
+        { num: "London", label: "& the South East" }
+      ],
+      steps: [
+        { n: "01", t: "Free Consultation", d: "We visit your property, listen to your ideas and assess the project at no cost." },
+        { n: "02", t: "Detailed Quote", d: "You receive a clear, itemised quote with no hidden costs or surprises." },
+        { n: "03", t: "Build & Manage", d: "Our skilled team carries out the work, keeping you updated at every stage." },
+        { n: "04", t: "Handover", d: "We finish on time, tidy up and walk you through the completed work." }
+      ],
+      filters,
+      projects,
+      accreds: ["Fully Insured", "Building Regs Compliant", "Health & Safety First", "Guaranteed Workmanship"],
+      reviews: [
+        { quote: "SISOL transformed our tired Victorian terrace with a stunning rear extension. Professional, tidy and finished on schedule. Couldn't recommend them more.", initials: "JH", name: "James & Hannah", role: "Clapham" },
+        { quote: "From quote to completion the communication was excellent. The loft conversion has given us a beautiful new bedroom and the quality is superb.", initials: "PA", name: "Priya A.", role: "Islington" },
+        { quote: "Reliable, honest and genuinely skilled. They managed our full refurbishment and kept everything on budget. A pleasure to work with.", initials: "DM", name: "David M.", role: "Hackney" }
+      ],
+      faqs,
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      submit: () => this.setState({ submitted: true })
+    };
+  }
+}
+</script>
+</body>
+</html>
